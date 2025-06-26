@@ -11,18 +11,20 @@ const toolsData = [
     description: "4-7-8呼吸法をはじめ、4-4-4-4呼吸法などをサポートする４セクションのカウントダウンをループするタイマーアプリ。吸う、止める、吐く、休憩を自分に合った秒数に調整できます。入眠、リラックス、集中力をあげるなど様々な用途で使用できます。",
     toolType: "インストール対応PWA",
     url: "https://note314.github.io/anmin478/",
-    icon: "/images/icons/tool-001.png",
+    icon: "/note314-archives/images/icons/tool-001.png",
+    thumbnail: "/note314-archives/images/thumbnails/tool-001.png",
     notice: null
   },
   {
     id: "002",
     category: "Tools",
-    title: "提案書テンプレート",
-    fullTitle: "コンサル提案書テンプレート",
-    description: "プロフェッショナルなコンサルティング提案書のPowerPointテンプレート。課題設定から解決策提示、投資対効果まで論理的に構成された提案フローを提供。クライアントの意思決定を促進する説得力のあるストーリーテリング手法を内包。新規案件獲得率向上を目指すコンサルタント、営業担当者に最適です。",
+    title: "行動できない10の特徴",
+    fullTitle: "実践ワーク 特典資料",
+    description: "行動できない自分を変える10のチェックポイント。尻込みしている気持ちをほぐして一歩を踏み出すための初級編。印刷して講義レジュメに、またはリンクをシェアして特典ワークとして使うことを想定しています。",
     toolType: "Webサイト",
-    url: "https://example.com/proposal-template",
+    url: "https://note314.github.io/BusinessGuide/",
     icon: "📋",
+    thumbnail: "/note314-archives/images/thumbnails/tool-002.png",
     notice: null
   },
   {
@@ -117,10 +119,30 @@ function BackgroundEffects() {
 
 // Tool card component
 function ToolCard({ tool, onClick }) {
+  const isImageIcon = tool.icon.startsWith('/') || tool.icon.startsWith('http');
+  
+  const handleImageError = (e) => {
+    console.error('Icon image failed to load:', tool.icon);
+    // フォールバック: 絵文字アイコンに変更
+    e.target.style.display = 'none';
+    e.target.parentElement.innerHTML = '🔧';
+  };
+  
   return (
     <div className="tool-card" onClick={() => onClick(tool)}>
       <div className="tool-card-icon-bg">
-        <div className="tool-card-icon">{tool.icon}</div>
+        <div className="tool-card-icon">
+          {isImageIcon ? (
+            <img 
+              src={tool.icon} 
+              alt="" 
+              onError={handleImageError}
+              onLoad={() => console.log('Icon loaded:', tool.icon)}
+            />
+          ) : (
+            tool.icon
+          )}
+        </div>
       </div>
       <div className="tool-card-title">{tool.title}</div>
     </div>
@@ -155,9 +177,19 @@ function Modal({ tool, onClose }) {
         <h2 className="modal-title">{tool.fullTitle}</h2>
         
         <div className="modal-preview">
-          <div className="modal-icon">{tool.icon}</div>
+          <div className="modal-icon">
+            {tool.icon.startsWith('/') || tool.icon.startsWith('http') ? (
+              <img src={tool.icon} alt={tool.title} />
+            ) : (
+              tool.icon
+            )}
+          </div>
           <div className="modal-thumbnail">
-            プレビュー
+            {tool.thumbnail ? (
+              <img src={tool.thumbnail} alt="プレビュー" />
+            ) : (
+              "プレビュー"
+            )}
           </div>
         </div>
         

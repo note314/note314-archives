@@ -5,13 +5,13 @@ const toolsData = [
   // Tools (3点)
   {
     id: "001",
-    category: "Tools",
-    title: "顧客データ分析",
-    fullTitle: "顧客データ分析テンプレート",
-    description: "Excelベースの顧客データ分析テンプレート。購買履歴、デモグラフィック情報、行動パターンを統合的に分析し、セグメンテーションやLTV予測が可能。営業戦略立案やマーケティング施策の効果測定に活用できます。小売業、サービス業での顧客理解を深める際に特に有効で、データドリブンな意思決定をサポートします。",
-    toolType: "Webツール",
-    url: "https://example.com/customer-analysis",
-    icon: "📊",
+    category: "Showcase",
+    title: "入眠サポート",
+    fullTitle: "安眠４７８",
+    description: "4-7-8呼吸法をはじめ、4-4-4-4呼吸法などをサポートする４セクションのカウントダウンをループするタイマーアプリ。吸う、止める、吐く、休憩を自分に合った秒数に調整できます。入眠、リラックス、集中力をあげるなど様々な用途で使用できます。",
+    toolType: "インストール対応PWA",
+    url: "https://note314.github.io/anmin478/",
+    icon: "/images/icons/tool-001.png",
     notice: null
   },
   {

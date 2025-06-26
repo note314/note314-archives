@@ -184,6 +184,26 @@ function Modal({ tool, onClose }) {
   );
 }
 
+// Tool section component
+function ToolSection({ category, tools, onCardClick }) {
+  const sortedTools = tools.sort((a, b) => a.id.localeCompare(b.id));
+  
+  return (
+    <section className="tool-section">
+      <h2 className="section-title">{category}</h2>
+      <div className="tools-grid">
+        {sortedTools.map((tool) => (
+          <ToolCard 
+            key={tool.id} 
+            tool={tool} 
+            onClick={onCardClick}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const [selectedTool, setSelectedTool] = useState(null);
 
@@ -195,6 +215,19 @@ function App() {
     setSelectedTool(null);
   };
 
+  // Group tools by category
+  const groupByCategory = (tools) => {
+    return tools.reduce((groups, tool) => {
+      const category = tool.category;
+      if (!groups[category]) groups[category] = [];
+      groups[category].push(tool);
+      return groups;
+    }, {});
+  };
+
+  const groupedTools = groupByCategory(toolsData);
+  const categoryOrder = ['Tools', 'Insights', 'Showcase'];
+
   return (
     <>
       <BackgroundEffects />
@@ -205,15 +238,16 @@ function App() {
           <p className="sub-title">いますぐ役立つツール集</p>
         </header>
         
-        <div className="tools-grid">
-          {toolsData.map((tool) => (
-            <ToolCard 
-              key={tool.id} 
-              tool={tool} 
-              onClick={handleCardClick}
+        {categoryOrder.map(category => (
+          groupedTools[category] && (
+            <ToolSection 
+              key={category}
+              category={category}
+              tools={groupedTools[category]}
+              onCardClick={handleCardClick}
             />
-          ))}
-        </div>
+          )
+        ))}
       </div>
       
       {selectedTool && (

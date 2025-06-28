@@ -1,5 +1,12 @@
 import { useState } from 'react'
 
+// Menu items configuration
+const menuItems = [
+  { id: 'install', icon: '📱', label: 'アプリとしてインストール', type: 'action' },
+  { id: 'disclaimer', icon: '⚖️', label: '免責事項', type: 'modal' },
+  { id: 'credit', icon: '©', label: 'クレジット', type: 'modal' }
+];
+
 // Sample data according to specifications
 const toolsData = [
   // Tools (3点)
@@ -30,36 +37,39 @@ const toolsData = [
   {
     id: "003",
     category: "Tools",
-    title: "ROI計算ツール",
-    fullTitle: "投資対効果計算ツール",
-    description: "IT投資、マーケティング施策、人材投資などの投資対効果を正確に算出するWebツール。NPV、IRR、回収期間を自動計算し、複数案件の比較分析が可能。経営判断に必要な財務指標を視覚的に表示し、ステークホルダーへの説明資料も自動生成。予算策定や投資意思決定の精度向上に貢献します。",
-    toolType: "Webツール",
-    url: "https://example.com/roi-calculator",
-    icon: "🧮",
-    notice: null
+    title: "BtoC LPテンプレ",
+    fullTitle: "BtoC LPテンプレート",
+    description: "売上があがるLPテンプレート。BtoCは感覚的な訴求が強く、限定性など突発的な消費行動に焦点を当てている。従来型の王道LPで、記載する情報を集めていくと自然にマーケティングが進む地図としても使用可能。",
+    toolType: "Webサイト",
+    url: "https://note314.github.io/stack4html/b2c_lp_template.html",
+    icon: "📋",
+    thumbnail: "/note314-archives/images/thumbnails/tool-003.png",
+    notice: "PCとスマホでレイアウトが変わります！"
   },
   
-  // Insights (2点)
+  // Insights (1点)
   {
     id: "004",
-    category: "Insights",
-    title: "AI活用マニュアル",
-    fullTitle: "ChatGPT業務活用マニュアル",
-    description: "ChatGPTを業務で効果的に活用するための実践的ガイド。プロンプトエンジニアリングの基礎から、文書作成、データ分析、アイデア創出まで具体的な活用事例を豊富に収録。セキュリティ配慮事項や運用ルールも詳説し、組織導入時のベストプラクティスを提示。AI時代の業務効率化を実現するための必携リソースです。",
+    category: "Tools",
+    title: "BtoB LPテンプレ",
+    fullTitle: "BtoB LPテンプレート",
+    description: "売上があがるLPテンプレート。BtoBはエビデンスや費用対効果をアピールしていてロジカル。比較検討をしやすく、稟議などで強くデザインされている。従来型の王道LPで、記載する情報を集めていくと自然にマーケティングが進む地図としても使用可能。",
     toolType: "Webサイト",
-    url: "https://example.com/ai-manual",
-    icon: "🤖",
-    notice: "初回利用時は設定が必要です"
+    url: "https://note314.github.io/stack4html/lp_b2b_html.html",
+    icon: "📋",
+    thumbnail: "/note314-archives/images/thumbnails/tool-004.png",
+    notice: "PCとスマホでレイアウトが変わります！"
   },
   {
     id: "005",
     category: "Insights",
-    title: "論理思考フレーム",
-    fullTitle: "論理思考フレームワーク集",
-    description: "問題解決に必要な論理思考フレームワークを体系的にまとめた実践ガイド。ロジックツリー、MECE、帰納法・演繹法から、ピラミッドストラクチャー、仮説思考まで幅広くカバー。各フレームワークの使い分け方法と実際のビジネス場面での適用例を詳細解説。コンサルタント、企画職、管理職に必須の思考技術を習得できます。",
+    title: "認知バイアス入門",
+    fullTitle: "思考のクセを味方にする",
+    description: "誰もが持つ思考や判断能力に関するクセであるバイアス。先入観や偏見とも言われるが、うまく付き合うことでビジネスや日常をもっと豊かに過ごせるようになる。",
     toolType: "Webサイト", 
-    url: "https://example.com/logic-framework",
+    url: "https://note314.github.io/stack4html/bias_learning_elemental.html",
     icon: "💭",
+    thumbnail: "/note314-archives/images/thumbnails/tool-005.png",
     notice: null
   },
   
@@ -113,6 +123,102 @@ function BackgroundEffects() {
       
       {/* Grid lines */}
       <div className="grid-lines"></div>
+    </div>
+  );
+}
+
+// Hamburger menu component
+function HamburgerMenu({ isOpen, onToggle, onMenuAction }) {
+  const handleMenuClick = (item) => {
+    onMenuAction(item);
+    if (item.type !== 'action') {
+      onToggle(); // Close menu after selection (except for actions)
+    }
+  };
+
+  return (
+    <>
+      <button className="hamburger-button" onClick={onToggle}>
+        <span className={`hamburger-line ${isOpen ? 'active' : ''}`}></span>
+        <span className={`hamburger-line ${isOpen ? 'active' : ''}`}></span>
+        <span className={`hamburger-line ${isOpen ? 'active' : ''}`}></span>
+      </button>
+      
+      {isOpen && (
+        <div className="menu-overlay" onClick={onToggle}>
+          <div className="menu-container" onClick={(e) => e.stopPropagation()}>
+            <div className="menu-header">
+              <h3>Menu</h3>
+              <button className="menu-close" onClick={onToggle}>×</button>
+            </div>
+            <div className="menu-items">
+              {menuItems.map((item) => (
+                <button
+                  key={item.id}
+                  className="menu-item"
+                  onClick={() => handleMenuClick(item)}
+                >
+                  <span className="menu-icon">{item.icon}</span>
+                  <span className="menu-label">{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// Info modal component
+function InfoModal({ type, onClose }) {
+  if (!type) return null;
+
+  const getModalContent = () => {
+    switch (type) {
+      case 'disclaimer':
+        return {
+          title: '免責事項',
+          content: (
+            <div>
+              <p>本サイトで提供するツールやコンテンツは、情報提供のみを目的としています。</p>
+              <p>利用者が本サイトの情報を用いて行う一切の行為について、当サイトは責任を負いません。</p>
+              <p>各ツールの利用は自己責任でお願いいたします。</p>
+            </div>
+          )
+        };
+      case 'credit':
+        return {
+          title: 'クレジット',
+          content: (
+            <div>
+              <p><strong>note314:archives</strong></p>
+              <p>© 2025 note314</p>
+              <p>All rights reserved.</p>
+              <br />
+              <p>本サイトのデザイン、コンテンツ、およびツールの著作権は note314 に帰属します。</p>
+            </div>
+          )
+        };
+      default:
+        return { title: '', content: null };
+    }
+  };
+
+  const { title, content } = getModalContent();
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal info-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose}>×</button>
+        <h2 className="modal-title">{title}</h2>
+        <div className="info-modal-content">{content}</div>
+        <div className="modal-actions">
+          <button className="modal-button" onClick={onClose}>
+            閉じる
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -238,6 +344,8 @@ function ToolSection({ category, tools, onCardClick }) {
 
 function App() {
   const [selectedTool, setSelectedTool] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [infoModal, setInfoModal] = useState(null);
 
   const handleCardClick = (tool) => {
     setSelectedTool(tool);
@@ -245,6 +353,30 @@ function App() {
 
   const handleCloseModal = () => {
     setSelectedTool(null);
+  };
+
+  const handleMenuToggle = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleMenuAction = (item) => {
+    switch (item.id) {
+      case 'install':
+        // PWA install logic will be implemented later
+        alert('インストール機能は準備中です');
+        setMenuOpen(false);
+        break;
+      case 'disclaimer':
+      case 'credit':
+        setInfoModal(item.id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleInfoModalClose = () => {
+    setInfoModal(null);
   };
 
   // Group tools by category
@@ -263,6 +395,12 @@ function App() {
   return (
     <>
       <BackgroundEffects />
+      
+      <HamburgerMenu 
+        isOpen={menuOpen}
+        onToggle={handleMenuToggle}
+        onMenuAction={handleMenuAction}
+      />
       
       <div className="container">
         <header className="header">
@@ -286,6 +424,13 @@ function App() {
         <Modal 
           tool={selectedTool} 
           onClose={handleCloseModal}
+        />
+      )}
+      
+      {infoModal && (
+        <InfoModal 
+          type={infoModal}
+          onClose={handleInfoModalClose}
         />
       )}
     </>
